@@ -1,6 +1,7 @@
 #include "TestFinder.h"
+
 #include "iostream"
 
-TestFinder::TestFinder(){
-	std::cout << "Constructed" << std::endl;
+TestFinder::TestFinder() {
+    std::cout << "Constructed" << std::endl;
 }

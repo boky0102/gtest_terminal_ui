@@ -2,6 +2,6 @@
 
 class TestFinder
 {
-public:
-	TestFinder();
+   public:
+    TestFinder();
 };

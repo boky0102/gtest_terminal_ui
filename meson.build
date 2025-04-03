@@ -1,4 +1,4 @@
-project('test_ui', 'cpp')
+project('test_ui', 'cpp', default_options: ['c_std=c23'])
 
 # ftxui-screen, ftxui-dom, ftxui-component
 
