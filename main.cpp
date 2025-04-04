@@ -11,10 +11,12 @@
 #include "ftxui/screen/color.hpp"
 #include "string"
 
+
 int main() {
     std::string input;
 
     int selected_element = -1;
+    int previous_element = -1;
 
     std::vector<std::string> list{"one line", "two line", "three line"};
 
@@ -32,22 +34,18 @@ int main() {
     auto components = ftxui::Container::Vertical({input_search});
 
     auto renderer = ftxui::Renderer(components, [&] {
-        if (selected_element - 1 >= 0) {
-            elements[selected_element - 1] |=
-                ftxui::bgcolor(ftxui::Color::Cyan3);
-        }
-
-        if (selected_element + 2 < elements.size()) {
-            elements[selected_element + 2] |=
-                ftxui::bgcolor(ftxui::Color::Cyan3);
-        }
 
         elements[selected_element + 1] |= ftxui::bgcolor(ftxui::Color::Blue);
-        elements.push_back(ftxui::text(std::to_string(selected_element)));
+        if(previous_element > 0){
+            elements[previous_element] |= ftxui::bgcolor(ftxui::Color::Aquamarine1);
+        }
+
+        previous_element = selected_element;
+
         auto results = ftxui::frame(ftxui::vbox(elements));
         return ftxui::vbox({ftxui::hbox(ftxui::text("Search : ") | ftxui::bold,
                                         input_search->Render()),
-                            ftxui::separator(), results});
+                            ftxui::separator(), results | ftxui::bgcolor(ftxui::Color::Cyan)});
     });
 
     renderer |= ftxui::CatchEvent([&](ftxui::Event event) {
@@ -56,6 +54,11 @@ int main() {
             selected_element--;
             return true;
         } else if (event == ftxui::Event::ArrowDown) {
+
+            elements.emplace_back(ftxui::text(event.character()));
+
+
+
             selected_element++;
             return true;
         } else if (event.character() == "q") {

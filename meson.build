@@ -12,7 +12,8 @@ gtest_dep = gtest.get_variable('gtest_main_dep')
 
 
 sources = files(
-  'src/TestFinder.cpp'
+  'src/TestFinder.cpp',
+  'src/Logger.cpp'
 )
 
 include_dirs = include_directories([
