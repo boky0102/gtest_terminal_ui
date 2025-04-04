@@ -1,7 +1,13 @@
 #include "gtest/gtest.h"
-#include "TestFinder.h"
+#include "Logger.h"
 
 TEST(MainTest, Test1){
-	TestFinder();
 	EXPECT_EQ(1, 1);
+}
+
+TEST(MainTest, GetLogger)
+{
+	auto log = UTIL::Log();
+
+	log << std::string("bla");
 }

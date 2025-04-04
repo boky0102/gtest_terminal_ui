@@ -11,7 +11,6 @@
 #include "ftxui/screen/color.hpp"
 #include "string"
 
-
 int main() {
     std::string input;
 
@@ -34,10 +33,10 @@ int main() {
     auto components = ftxui::Container::Vertical({input_search});
 
     auto renderer = ftxui::Renderer(components, [&] {
-
         elements[selected_element + 1] |= ftxui::bgcolor(ftxui::Color::Blue);
-        if(previous_element > 0){
-            elements[previous_element] |= ftxui::bgcolor(ftxui::Color::Aquamarine1);
+        if (previous_element > 0) {
+            elements[previous_element] |=
+                ftxui::bgcolor(ftxui::Color::Aquamarine1);
         }
 
         previous_element = selected_element;
@@ -45,7 +44,8 @@ int main() {
         auto results = ftxui::frame(ftxui::vbox(elements));
         return ftxui::vbox({ftxui::hbox(ftxui::text("Search : ") | ftxui::bold,
                                         input_search->Render()),
-                            ftxui::separator(), results | ftxui::bgcolor(ftxui::Color::Cyan)});
+                            ftxui::separator(),
+                            results | ftxui::bgcolor(ftxui::Color::Cyan)});
     });
 
     renderer |= ftxui::CatchEvent([&](ftxui::Event event) {
@@ -54,10 +54,7 @@ int main() {
             selected_element--;
             return true;
         } else if (event == ftxui::Event::ArrowDown) {
-
             elements.emplace_back(ftxui::text(event.character()));
-
-
 
             selected_element++;
             return true;
