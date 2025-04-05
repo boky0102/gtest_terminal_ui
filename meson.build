@@ -47,7 +47,8 @@ executable('testu',
 
 ##### TEST FILES
 test_src = files(
-  'test/test.cpp'
+  'test/test.cpp',
+  'test/TestDom.cpp'
 )
 
 ##### TEST EXECUTABLE
