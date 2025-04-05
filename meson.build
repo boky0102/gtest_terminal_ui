@@ -1,4 +1,4 @@
-project('test_ui', 'cpp', default_options: ['c_std=c23'])
+project('test_ui', 'cpp', default_options: ['cpp_std=c++23'])
 
 # ftxui-screen, ftxui-dom, ftxui-component
 
@@ -11,13 +11,17 @@ gtest = subproject('gtest')
 gtest_dep = gtest.get_variable('gtest_main_dep')
 
 
+
 sources = files(
   'src/TestFinder.cpp',
-  'src/Logger.cpp'
+  'src/Logger.cpp',
+  'src/Renderer.cpp',
+  'components/TestItem.cpp'
 )
 
 include_dirs = include_directories([
-  'include'
+  'include',
+  'components/include'
 ])
 
 deps = [ftxui_screen, ftxui_dom, ftxui_component ]
@@ -33,7 +37,8 @@ main_lib = shared_library(
 executable('testu',
   sources: ['main.cpp', sources],
   dependencies: deps,
-  include_directories: include_dirs
+  include_directories: include_dirs,
+  override_options: ['cpp_std=c++23'],
 )
 
 
