@@ -1,7 +1,9 @@
 #include <iostream>
+#include <memory>
 
 #include "Renderer.h"
 #include "State.h"
+#include "TestFinder.h"
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
 #include "ftxui/component/event.hpp"
@@ -15,13 +17,19 @@ class TestEvent : public testing::Test
    protected:
     void SetupStateAndInput() {
         m_inputElement = ftxui::Input(state.search_txt);
-        m_renderer = RENDERER::Setup(state, m_inputElement);
+        // NOTE: nullptr ref maybe
+        //
+
+        m_testFinder = std::make_unique<TestFinder>("C");
+
+        m_renderer = RENDERER::Setup(state, m_inputElement, *m_testFinder);
     }
 
-    State state{{"one", "two", "three"}, 0, ""};
+    State state{{{"one", "one"}, {"two", "two"}, {"three", "three"}}, 0, ""};
 
     ftxui::Component m_inputElement;
 
+    std::unique_ptr<TestFinder> m_testFinder;
     ftxui::Component m_renderer;
 };
 
@@ -39,7 +47,7 @@ TEST_F(TestEvent, TestArrowDown) {
     state.select_pos = state.test_names.size() - 1;
     m_renderer->OnEvent(ftxui::Event::ArrowDown);
 
-    EXPECT_EQ(state.select_pos, static_cast<int>(state.test_names.size()));
+    EXPECT_EQ(state.select_pos, static_cast<int>(state.test_names.size()) - 1);
 }
 
 TEST_F(TestEvent, TestArrowUp) {

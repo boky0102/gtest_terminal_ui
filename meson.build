@@ -9,7 +9,7 @@ ftxui_component = ftxui.get_variable('component_dep')
 
 gtest = subproject('gtest')
 gtest_dep = gtest.get_variable('gtest_main_dep')
-
+gmock_dep = gtest.get_variable('gmock_main_dep')
 
 
 sources = files(
@@ -54,7 +54,7 @@ test_src = files(
 ##### TEST EXECUTABLE
 executable('test_ex',
   sources: test_src,
-  dependencies: [gtest_dep, deps],
-  include_directories: include_dirs,
+  dependencies: [gtest_dep, gmock_dep, deps],
+  include_directories: [include_dirs, 'test/Mocks'],
   link_with: main_lib
 )

@@ -1,7 +1,15 @@
 #include "TestFinder.h"
 
-#include "iostream"
+#include <ranges>
+#include <string>
+#include <vector>
 
-TestFinder::TestFinder() {
-    std::cout << "Constructed" << std::endl;
+TestFinder::TestFinder(std::string rootPath) : m_rootPath(rootPath) {
+}
+
+auto TestFinder::GetTestNames(std::string searchString)
+    -> std::vector<TestInfo> {
+    std::vector<TestInfo> vec;
+
+    return vec;
 }
