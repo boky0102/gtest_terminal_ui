@@ -1,4 +1,5 @@
 #include <memory>
+#include <string>
 
 #include "Renderer.h"
 #include "State.h"
@@ -12,7 +13,6 @@ int main() {
 
     state.select_pos = 0;
     state.search_txt = "";
-    state.test_names = {{"One", "one"}, {"Two", "two"}, {"Three", "Three"}};
 
     auto input_element = ftxui::Input(&state.search_txt, "Search");
 
@@ -23,4 +23,9 @@ int main() {
     auto screen = ftxui::ScreenInteractive::Fullscreen();
     screen.TrackMouse(false);
     screen.Loop(renderer);
+
+    return 1;
+
 }
+
+

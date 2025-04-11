@@ -31,6 +31,7 @@ main_lib = shared_library(
   sources: sources,
   dependencies: [deps],
   include_directories: include_dirs,
+  override_options: ['cpp_std=c++23'],
   install: true
 )
 
@@ -48,7 +49,8 @@ executable('testu',
 ##### TEST FILES
 test_src = files(
   'test/test.cpp',
-  'test/TestDom.cpp'
+  'test/TestDom.cpp',
+  'test/TestTestFinder.cpp'
 )
 
 ##### TEST EXECUTABLE
@@ -56,5 +58,11 @@ executable('test_ex',
   sources: test_src,
   dependencies: [gtest_dep, gmock_dep, deps],
   include_directories: [include_dirs, 'test/Mocks'],
-  link_with: main_lib
+  link_with: main_lib,
+  override_options: ['cpp_std=c++23']
 )
+
+##### FAKE TEST EXES
+executable('TestFake1', 'test/FakeTestDir/TestFake1.cpp', dependencies: [gtest_dep])
+executable('TestFake2', 'test/FakeTestDir/TestFake2.cpp', dependencies: [gtest_dep])
+executable('TestFake3', 'test/FakeTestDir/TestFake3.cpp', dependencies: [gtest_dep])

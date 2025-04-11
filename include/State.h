@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ITestFinder.h"
+#include "Types.h"
 #include "string"
 #include "vector"
 
 struct State {
-    std::vector<TestInfo> test_names;
+    std::vector<TestExe> test_names;
     int select_pos;
     std::string search_txt;
 };

@@ -1,21 +1,11 @@
 #pragma once
 
-#include "string"
+#include <vector>
+#include "Types.h"
 #include "vector"
 
 namespace UTIL {
 
-class Log
-{
-   public:
-    Log operator<<(std::string& message) {
-        m_logs.push_back(message);
-        return *this;
-    }
+void Log(std::vector<TestExe> &testExes);
 
-    auto GetLogs() -> std::vector<std::string>;
-
-   private:
-    std::vector<std::string> m_logs;
-};
-}  // namespace UTIL
+}; // namespace UTIL

@@ -17,15 +17,15 @@ class TestEvent : public testing::Test
    protected:
     void SetupStateAndInput() {
         m_inputElement = ftxui::Input(state.search_txt);
-        // NOTE: nullptr ref maybe
-        //
 
         m_testFinder = std::make_unique<TestFinder>("C");
 
+        auto fakeExe = TestExe{"testExe", "/path", {{"TestSuite1", "TestOne"}, {"TestSuite2", "TestTwo"}, {"TestSuite3", "TestThree"}}};
+        state.test_names = {fakeExe, fakeExe, fakeExe};
         m_renderer = RENDERER::Setup(state, m_inputElement, *m_testFinder);
     }
 
-    State state{{{"one", "one"}, {"two", "two"}, {"three", "three"}}, 0, ""};
+    State state{{}, 0, ""};
 
     ftxui::Component m_inputElement;
 
@@ -86,4 +86,5 @@ TEST_F(TestEvent, TestInputElement) {
 
     m_renderer->OnEvent(ftxui::Event::Backspace);
     m_renderer->OnEvent(ftxui::Event::Backspace);
+
 }

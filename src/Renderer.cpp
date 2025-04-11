@@ -27,8 +27,8 @@ void HandleArrowUp(State& state) {
 void HandleChars(State& state, ftxui::Event& event, ITestFinder& testFinder) {
     state.search_txt += event.character();
 
-    const auto tests = testFinder.GetTestNames(state.search_txt);
-    state.test_names = std::move(tests);
+    /*const auto tests = testFinder.GetTestFiles();*/
+    /*state.test_names = std::move(tests);*/
 }
 
 void HandleDelete(State& state) {
@@ -51,18 +51,21 @@ void SwitchHandles(ftxui::Event& event, State& state, ITestFinder& testFinder) {
 }
 
 // TODO: limit number of rendered elements when size is too big
+// NOTE: This part is subject to change !!! current implementation is not finished
 auto TransformSearchResultToDom(State& state) -> std::vector<ftxui::Element> {
     auto elements = std::vector<ftxui::Element>{};
-    elements.reserve(state.test_names.size());
 
     int i = 0;
-    for (const auto& elem : state.test_names) {
-        auto bgColor = i == state.select_pos
+    for (const auto& testExe : state.test_names) {
+
+        for(const auto& test: testExe.tests){
+             auto bgColor = i == state.select_pos
                            ? ftxui::Color::Palette16::Cyan
                            : ftxui::Color::Palette16::MagentaLight;
 
-        elements.emplace_back(ftxui::text(elem.name) | ftxui::bgcolor(bgColor));
-        i++;
+            elements.emplace_back(ftxui::text(test.name) | ftxui::bgcolor(bgColor));
+            i++;
+        }
     }
 
     return elements;

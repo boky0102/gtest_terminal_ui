@@ -1,20 +1,18 @@
 #pragma once
 
+#include <filesystem>
 #include "ITestFinder.h"
 
 class TestFinder : public ITestFinder
 {
    public:
-    TestFinder(std::string rootPath);
+    TestFinder(std::filesystem::path path);
     ~TestFinder() = default;
 
-    std::vector<TestInfo> GetTestNames(std::string searchStr) override;
+    auto GetTestFiles() -> std::vector<TestExe> override;
 
-    // TODO: Find a better way to handle path data
    private:
-    // TODO: Implement method for Getting test data from the root folder
-    void GatherTestData();
+    auto GatherTestData() -> std::vector<TestExe>;
 
-    std::vector<TestInfo> m_foundTestData;
-    std::string m_rootPath;
+    std::filesystem::path m_rootPath;
 };

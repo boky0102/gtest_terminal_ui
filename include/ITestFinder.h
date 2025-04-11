@@ -1,22 +1,16 @@
 #pragma once
 
-#include <string>
 #include <vector>
-
-struct TestInfo {
-    std::string name;
-    std::string parent;
-};
+#include "Types.h"
 
 class ITestFinder
 {
    public:
-    virtual auto GetTestNames(std::string searchStr)
-        -> std::vector<TestInfo> = 0;
+    virtual auto GetTestFiles() -> std::vector<TestExe> = 0;
     virtual ~ITestFinder() {};
 };
 
 class ITestRunner
 {
-    virtual void RunTest(TestInfo test);
+    virtual void RunTest(TestExe test);
 };

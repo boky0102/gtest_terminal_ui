@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <vector>
 
 #include "Renderer.h"
@@ -14,23 +15,45 @@ class TestDomState : public testing::Test
 {
    protected:
     void SetupStateAndInput() {
-        m_state = {{{"one", "one"}, {"two", "two"}, {"three", "three"}}, 0, ""};
+        m_state = {{},0, ""};
         m_inputElement = ftxui::Input(m_state.search_txt);
         m_renderer = RENDERER::Setup(m_state, m_inputElement, m_testFinderMock);
     }
 
     void SetupMocks() {
+        auto bin1 = std::filesystem::current_path().append("TestFake1");
+        auto bin2 = std::filesystem::current_path().append("TestFake2");
+        auto bin3 = std::filesystem::current_path().append("TestFake3");
+
+
+        ASSERT_TRUE(bin1.has_filename());
+        ASSERT_TRUE(bin2.has_filename());
+        ASSERT_TRUE(bin3.has_filename());
+
         // clang-format off
-        ON_CALL(m_testFinderMock, GetTestNames(testing::_))
-            .WillByDefault(
-                testing::Return(std::vector<TestInfo>{
-                    {"Tests1", "test1"},
-                    {"Tests1", "test2"},
-                    {"Kfc", "chicken_flies"},
-                    {"Kfc", "fly_chicken"},
-                    {"Kfc", "fly_chicken_run"}
-                }));
+        auto fakeTest1Exe = TestExe{
+            "TestFake1",
+            bin1,
+            {{"FakeSuite1", "FakeTest1"}}
+        };
+
+        auto fakeTest2Exe = TestExe{
+            "TestFake2",
+            bin2,
+            {{"FakeSuite2", "FakeTest2"}, {"FakeSuite2", "FakeTest3"}}
+        };
+
+        auto fakeTest3Exe = TestExe{
+            "TestFake3",
+            bin3,
+            {{"FakeSuite3", "FakeTest5"}, {"FakeSuite4", "FakeTest6"}, {"FakeSuite4", "FakeTest7"}}
+        };
         // clang-format on
+
+        auto fakeTestExes = std::vector<TestExe>{fakeTest1Exe, fakeTest2Exe, fakeTest3Exe};
+
+        ON_CALL(m_testFinderMock, GetTestFiles())
+            .WillByDefault(testing::Return(fakeTestExes));
     }
 
     ftxui::Component m_inputElement;
@@ -40,13 +63,7 @@ class TestDomState : public testing::Test
     State m_state;
 
     testing::NiceMock<TestFinderMock> m_testFinderMock;
+
 };
 
-TEST_F(TestDomState, TestRender) {
-    SetupStateAndInput();
-    SetupMocks();
-
-    m_renderer->OnEvent(ftxui::Event::Character('t'));
-
-    EXPECT_EQ(m_state.test_names.size(), 2);
-}
+// NOTE: Here you can create tests with test mocked functionality

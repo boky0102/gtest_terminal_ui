@@ -1,15 +1,34 @@
 #include "TestFinder.h"
 
-#include <ranges>
-#include <string>
 #include <vector>
+#include <filesystem>
 
-TestFinder::TestFinder(std::string rootPath) : m_rootPath(rootPath) {
+#include "Types.h"
+
+TestFinder::TestFinder(std::filesystem::path rootPath) : m_rootPath(rootPath) {
 }
 
-auto TestFinder::GetTestNames(std::string searchString)
-    -> std::vector<TestInfo> {
-    std::vector<TestInfo> vec;
+auto TestFinder::GetTestFiles()
+    -> std::vector<TestExe> 
+{ 
+    return GatherTestData();
+}
 
-    return vec;
+
+auto TestFinder::GatherTestData() -> std::vector<TestExe>
+{
+    auto currentPath = std::filesystem::current_path();
+    auto dirPaths = std::filesystem::recursive_directory_iterator(currentPath);
+
+    std::vector<TestExe> tests{};
+    tests.reserve(100000);
+
+
+    for(const auto& path: dirPaths){
+        const auto fileName = path.path().filename();
+        auto testExe = TestExe{fileName.string(), path.path()};
+        tests.emplace_back(testExe);
+    }
+
+    return tests;
 }
