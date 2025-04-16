@@ -61,7 +61,7 @@ auto TestFinder::ParseStdOutLine(char* line) -> std::pair<NameType, std::string>
 
     while(*line != NULL){
         
-        if(std::iscntrl(*line)){
+        if(std::iscntrl(*line) || std::isspace(*line)){
             line++;
             continue;
         }
