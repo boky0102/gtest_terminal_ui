@@ -74,10 +74,17 @@ TEST_F(TestFinderSuite, TestFinderIsFindingAllTests){
         return lastCharA < lastCharB;
     });
 
-    // INFO: this is a TestFake1 since they are sorted
-    /*EXPECT_EQ(finderResults[0].name, "TestFake1");*/
-    /*EXPECT_EQ(finderResults[0].tests[0].group, "FakeSuite1");*/
-    /*EXPECT_EQ(finderResults[0].tests[0].name, "FakeTest1");*/
+    for(const auto& elem: finderResults){
+        std::cout << elem.name << " -------- "<< std::endl;
+        for (const auto& test: elem.tests){
+            std::cout << test.name << " .. " << test.group << std::endl;
+        }
+    }
+
+    /*// INFO: this is a TestFake1 since they are sorted*/
+    EXPECT_EQ(finderResults[0].name, "TestFake1");
+    EXPECT_EQ(finderResults[0].tests[0].group, "FakeSuite1");
+    EXPECT_EQ(finderResults[0].tests[0].name, "FakeTest1");
 }
 
 

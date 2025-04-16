@@ -111,7 +111,6 @@ auto TestFinder::GetTestNamesFromTestExe(TestExe &testExe) -> std::vector<Test>
         
         foundTests.emplace_back(Test{currentSuite, name});
 
-        std::cout << currentSuite << " ... " << name << std::endl;
      }
 
     return foundTests;
@@ -142,8 +141,9 @@ auto TestFinder::GatherTestData() -> std::vector<TestExe>
 
         auto testExe = TestExe{fileName.string(), path.path()};
 
-
         auto testNames = GetTestNamesFromTestExe(testExe);
+        testExe.tests = std::move(testNames);
+
         tests.emplace_back(testExe);
     }
 
