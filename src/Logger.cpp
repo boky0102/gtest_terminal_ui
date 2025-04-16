@@ -19,5 +19,20 @@ void Log(std::vector<TestExe> &testExes){
     }
 }
 
+// NOTE: not usable !! 
+void Log(std::ranges::input_range auto&& data){
+    for(const TestExe exe : data){
+        std::cout << exe.name << std::endl;
+        std::cout << exe.path << std::endl;
+
+        for(Test testName : std::views::all(exe.tests)){
+            std::cout << "   " << testName.group << " . " << testName.name << std::endl; 
+        }
+
+        std::cout << "-----------------------" << std::endl;
+    }
+
+    std:: cout << "###########################" << std::endl;
 }
 
+}

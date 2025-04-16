@@ -2,6 +2,14 @@
 
 #include <filesystem>
 #include "ITestFinder.h"
+#include "utility"
+#include "Types.h"
+#include "vector"
+
+enum NameType {
+   SuiteName,
+   TestName
+};
 
 class TestFinder : public ITestFinder
 {
@@ -13,6 +21,9 @@ class TestFinder : public ITestFinder
 
    private:
     auto GatherTestData() -> std::vector<TestExe>;
+    bool PathIsExecutable(const std::filesystem::path& path);
+    auto GetTestNamesFromTestExe(TestExe& testExe) -> std::vector<Test>;
+    auto ParseStdOutLine(char* line) -> std::pair<NameType, std::string>;
 
     std::filesystem::path m_rootPath;
 };

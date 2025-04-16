@@ -6,7 +6,6 @@
 #include "TestFinderMock.h"
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
-#include "ftxui/component/event.hpp"
 #include "gmock/gmock-nice-strict.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
