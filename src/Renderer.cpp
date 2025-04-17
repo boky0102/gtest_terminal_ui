@@ -10,10 +10,21 @@
 #include "ftxui/dom/node.hpp"
 #include "ftxui/screen/color.hpp"
 
+#include "iostream"
+
 namespace RENDERER {
 
 void HandleArrowDown(State& state) {
-    if (state.select_pos < static_cast<int>(state.test_names.size()) - 1) {
+
+    // NOTE: Optimize with global view into found tests
+    auto nTests = 0;
+    for(const auto& testExe: state.test_names){
+        for(const auto& test: testExe.tests){
+            nTests++;
+        }
+    }
+
+    if (state.select_pos < nTests - 1) {
         state.select_pos++;
     }
 }
@@ -27,8 +38,7 @@ void HandleArrowUp(State& state) {
 void HandleChars(State& state, ftxui::Event& event, ITestFinder& testFinder) {
     state.search_txt += event.character();
 
-    /*const auto tests = testFinder.GetTestFiles();*/
-    /*state.test_names = std::move(tests);*/
+    // NOTE: Filter tests here
 }
 
 void HandleDelete(State& state) {
@@ -73,6 +83,10 @@ auto TransformSearchResultToDom(State& state) -> std::vector<ftxui::Element> {
 
 ftxui::Component Setup(State& state, ftxui::Component& input_element,
                        ITestFinder& testFinder) {
+
+    // TODO: Add busy indicator somewhere while tests are being searched
+    state.test_names = testFinder.GetTestFiles();
+
     auto renderer = ftxui::Renderer(input_element, [&]() {
         auto inputElement = ftxui::hbox(
             {ftxui::text("Search : ") | ftxui::bold, input_element->Render()});
