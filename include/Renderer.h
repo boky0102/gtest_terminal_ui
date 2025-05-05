@@ -12,6 +12,6 @@ namespace RENDERER {
 // -> setting up of the components to render based on state
 // -> regitering of event handlers
 ftxui::Component Setup(State& state, ftxui::Component& input_component,
-                       ITestFinder& testFinder);
+                       ITestFinder& testFinder, ITestRunner& testRunner);
 
 }  // namespace RENDERER

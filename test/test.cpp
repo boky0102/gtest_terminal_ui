@@ -2,8 +2,8 @@
 
 #include "Renderer.h"
 #include "State.h"
-#include "TestFinder.h"
 #include "TestFinderMock.h"
+#include "TestRunner.h"
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
 #include "ftxui/component/event.hpp"
@@ -20,11 +20,12 @@ class TestEvent : public testing::Test
         m_inputElement = ftxui::Input(state.search_txt);
 
         m_testFinder = std::make_unique<testing::NiceMock<TestFinderMock>>();
+        m_testRunner = std::make_unique<TestRunner>();
 
         auto fakeTestExes = std::vector<TestExe>{{"testExe", "/path", {{"TestSuite1", "TestOne"}, {"TestSuite2", "TestTwo"}, {"TestSuite3", "TestThree"}}}};
-        ON_CALL(*m_testFinder, GetTestFiles()).WillByDefault(testing::Return(fakeTestExes)); 
+        ON_CALL(*m_testFinder, GetTestFiles()).WillByDefault(testing::Return(fakeTestExes));
 
-        m_renderer = RENDERER::Setup(state, m_inputElement, *m_testFinder);
+        m_renderer = RENDERER::Setup(state, m_inputElement, *m_testFinder, *m_testRunner);
     }
 
     State state{{}, 0, ""};
@@ -32,13 +33,14 @@ class TestEvent : public testing::Test
     ftxui::Component m_inputElement;
 
     std::unique_ptr<TestFinderMock> m_testFinder;
+    std::unique_ptr<TestRunner> m_testRunner;
     ftxui::Component m_renderer;
 };
 
 TEST_F(TestEvent, TestArrowDown) {
 
     SetupStateAndInput();
-    
+
     ASSERT_EQ(state.test_names[0].tests.size(), 3);
     ASSERT_EQ(state.select_pos, 0);
 

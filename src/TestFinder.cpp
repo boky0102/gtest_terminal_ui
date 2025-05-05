@@ -3,7 +3,6 @@
 #include <linux/limits.h>
 
 #include <cctype>
-#include <cmath>
 #include <cstdio>
 #include <filesystem>
 #include <format>
@@ -135,7 +134,7 @@ auto TestFinder::GatherTestData() -> std::vector<TestExe> {
         testExe.tests = std::move(testNames);
 
         tests.emplace_back(testExe);
-    }
+   }
 
     return tests;
 }

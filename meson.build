@@ -11,20 +11,17 @@ gtest = subproject('gtest')
 gtest_dep = gtest.get_variable('gtest_main_dep')
 gmock_dep = gtest.get_variable('gmock_main_dep')
 
-
 sources = files(
-  'src/TestFinder.cpp',
+  'components/TestItem.cpp',
   'src/Logger.cpp',
   'src/Renderer.cpp',
-  'components/TestItem.cpp'
+  'src/TestFinder.cpp',
+  'src/TestRunner.cpp',
 )
 
-include_dirs = include_directories([
-  'include',
-  'components/include'
-])
+include_dirs = include_directories(['include', 'components/include', 'subprojects/rocket'])
 
-deps = [ftxui_screen, ftxui_dom, ftxui_component ]
+deps = [ftxui_screen, ftxui_dom, ftxui_component]
 
 main_lib = shared_library(
   'main_lib',
@@ -32,34 +29,34 @@ main_lib = shared_library(
   dependencies: [deps],
   include_directories: include_dirs,
   override_options: ['cpp_std=c++23'],
-  install: true
+  install: true,
 )
 
-executable('testu',
+executable(
+  'testu',
   sources: ['main.cpp', sources],
   dependencies: deps,
   include_directories: include_dirs,
   override_options: ['cpp_std=c++23'],
 )
 
-
 ############### TESTING ########################
-
 
 ##### TEST FILES
 test_src = files(
-  'test/test.cpp',
   'test/TestDom.cpp',
-  'test/TestTestFinder.cpp'
+  'test/TestTestFinder.cpp',
+  'test/test.cpp',
 )
 
 ##### TEST EXECUTABLE
-executable('test_ex',
+executable(
+  'test_ex',
   sources: test_src,
   dependencies: [gtest_dep, gmock_dep, deps],
   include_directories: [include_dirs, 'test/Mocks'],
   link_with: main_lib,
-  override_options: ['cpp_std=c++23']
+  override_options: ['cpp_std=c++23'],
 )
 
 ##### FAKE TEST EXES

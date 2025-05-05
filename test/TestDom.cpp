@@ -1,14 +1,17 @@
 #include <filesystem>
+#include <memory>
 #include <vector>
 
 #include "Renderer.h"
 #include "State.h"
 #include "TestFinderMock.h"
+#include "TestRunner.h"
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
 #include "gmock/gmock-nice-strict.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "TestRunner.h"
 
 class TestDomState : public testing::Test
 {
@@ -16,7 +19,9 @@ class TestDomState : public testing::Test
     void SetupStateAndInput() {
         m_state = {{},0, ""};
         m_inputElement = ftxui::Input(m_state.search_txt);
-        m_renderer = RENDERER::Setup(m_state, m_inputElement, m_testFinderMock);
+        m_testRunner = std::make_unique<TestRunner>();
+
+        m_renderer = RENDERER::Setup(m_state, m_inputElement, m_testFinderMock, *m_testRunner);
     }
 
     void SetupMocks() {
@@ -62,6 +67,7 @@ class TestDomState : public testing::Test
     State m_state;
 
     testing::NiceMock<TestFinderMock> m_testFinderMock;
+    std::unique_ptr<TestRunner> m_testRunner;
 
 };
 

@@ -1,7 +1,9 @@
 #pragma once
 
 #include <vector>
+
 #include "Types.h"
+#include "string"
 
 class ITestFinder
 {
@@ -12,5 +14,7 @@ class ITestFinder
 
 class ITestRunner
 {
-    virtual void RunTest(TestExe test);
+    public:
+    virtual void RunTest(TestExe test, std::string& testName) = 0;
+    virtual ~ITestRunner() {};
 };
